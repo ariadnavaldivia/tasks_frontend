@@ -19,7 +19,7 @@ export default function DetailTask(props:Props){
     )
 }
 
-export async function getStaticProps(context:any){
+export async function getServerSideProps(context:any){
 
     const {params} = context
     const id = params.id
@@ -33,20 +33,4 @@ export async function getStaticProps(context:any){
         }
     }
 
-}
-
-export async function getStaticPaths () {
-    
-    const allTasksResponse = await listTasks();
-    const allTasks = allTasksResponse.data.tasks;
-    let paths : any[] = []
-    if(allTasks){
-        paths = allTasks.map(task=>(
-            {params : {id:task.id?.toString()}}
-        ))
-    }
-    return {
-        paths :paths,
-        fallback : 'blocking'
-    }
 }

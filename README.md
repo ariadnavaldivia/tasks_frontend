@@ -5,6 +5,18 @@ This is a web app for Task Manager. This is a [Next.js](https://nextjs.org/) pro
 Node >=14.6.0
 
 ## Installation
+
+Clone the project with command:
+
+```bash
+  git clone https://github.com/ariadnavaldivia/tasks_frontend.git
+```
+
+Go to the project directory with command:
+
+```bash
+  cd tasks_frontend
+```
 Install all the dependencies:
 ```bash
 npm install

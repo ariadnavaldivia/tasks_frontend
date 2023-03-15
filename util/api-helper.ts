@@ -65,7 +65,7 @@ export async function getTask(id: number) {
 
     const fullUrl = `${urlApi}/tasks/get-task`;
 
-    let response: responseList = await fetch(fullUrl, {
+    let response: responseItem = await fetch(fullUrl, {
         method: 'POST',
         body: JSON.stringify({ id: id }),
         headers: {
