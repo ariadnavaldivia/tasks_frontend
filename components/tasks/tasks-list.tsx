@@ -124,6 +124,7 @@ export default function TasksList(props: Props) {
           </Link>
         </div>
       </div>
+      <small>Showing max: 10 items per page</small>
       <div className="table-responsive">
         <table className="table">
           <thead>
