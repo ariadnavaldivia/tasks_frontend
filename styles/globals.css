@@ -38,6 +38,16 @@
   --callout-border-rgb: 172, 175, 176;
   --card-rgb: 180, 185, 188;
   --card-border-rgb: 131, 134, 135;
+
+  --color-success-100: #a2f0bc;
+  /* --color-success-500: #12bd4b; */
+  --color-success-500: #b9e9c9;
+  --color-success-text : #196a35;
+
+
+  --color-error-100: #eecfcf;
+  --color-error-500: #a10c4a;
+  --color-error-text : #ac0606;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -87,12 +97,7 @@ body {
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  
 }
 
 a {
@@ -100,8 +105,22 @@ a {
   text-decoration: none;
 }
 
+.btn{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
   }
+}
+
+select.form-control{
+  appearance: auto !important;
+}
+
+.invalid.form-control{
+  border-color: red;
 }

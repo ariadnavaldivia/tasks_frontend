@@ -1,0 +1,30 @@
+.topTable{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.topTable select{
+    margin-left: 1rem;
+}
+
+.rightControl{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btnNew{
+    min-width: 150px;
+    margin-left: 2rem;
+}
+
+.searchInput{
+    margin-right: 2rem;
+}
+.btnActions {
+
+    text-align: center;
+}
+.btnActions button{
+    margin-right: 1rem;
+}
