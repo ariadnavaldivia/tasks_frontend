@@ -5,7 +5,10 @@ const apiKey = process.env.apiKey;
 
 interface responseList {
     success: boolean,
-    data: Task[],
+    data: {
+        tasks : Task[],
+        totalPages : number
+    } ,
     message: string
 }
 
@@ -15,13 +18,14 @@ interface responseItem {
     message: string
 }
 
-export async function listTasks(completed: number | null = null, search: string | null = null) {
+export async function listTasks(completed: number | null = null, search: string | null = null,
+    page : number|null=null) {
 
     const fullUrl = `${urlApi}/tasks/list`;
 
     let response: responseList = await fetch(fullUrl, {
         method: 'POST',
-        body: JSON.stringify({ completed: completed, search: search }),
+        body: JSON.stringify({ completed: completed, search: search, page:page }),
         headers: {
             'Content-Type': 'application/json',
             'x-api-key': apiKey ? apiKey : ''
@@ -29,7 +33,6 @@ export async function listTasks(completed: number | null = null, search: string 
     })
         .then(res => res.json())
         .then(data => {
-            console.log("data")
             return data
 
         })
@@ -60,7 +63,6 @@ export async function createTask(taskData: Task) {
 
 export async function getTask(id: number) {
 
-    console.log("id ", id)
     const fullUrl = `${urlApi}/tasks/get-task`;
 
     let response: responseList = await fetch(fullUrl, {
@@ -76,7 +78,6 @@ export async function getTask(id: number) {
             return data
         })
 
-    console.log(response)
     return response;
 }
 

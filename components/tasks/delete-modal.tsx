@@ -20,10 +20,10 @@ export default function DeleteModal(props: Props) {
   const dispatch = useDispatch();
 
   async function deleteById(){
-    console.log("borramos ",idTask)
+    
     setLoading(true)
     const response = await deleteTask(idTask);
-    console.log(response)
+    
     setLoading(false)
     if(response.success){
         dispatch(setNotification({'message':response.message,'status':'success'}))

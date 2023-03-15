@@ -11,7 +11,10 @@ export default function DetailTask(props:Props){
     return (
         <div>
             <h2>Update Task</h2>
-            <TaskForm mode="edit" taskToUpdate={task}/>
+            {task &&  <TaskForm mode="edit" taskToUpdate={task}/>}
+            {!task &&
+            <p>No task found</p>
+            }
         </div>
     )
 }
@@ -35,12 +38,15 @@ export async function getStaticProps(context:any){
 export async function getStaticPaths () {
     
     const allTasksResponse = await listTasks();
-    const allTasks = allTasksResponse.data;
-    const paths = allTasks.map(task=>(
-        {params : {id:task.id?.toString()}}
-    ))
+    const allTasks = allTasksResponse.data.tasks;
+    let paths : any[] = []
+    if(allTasks){
+        paths = allTasks.map(task=>(
+            {params : {id:task.id?.toString()}}
+        ))
+    }
     return {
         paths :paths,
-        fallback : false
+        fallback : true
     }
 }

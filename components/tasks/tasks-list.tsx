@@ -3,55 +3,92 @@ import { GetStaticProps, GetStaticPaths, GetServerSideProps } from "next";
 import { Task } from "@/util/Task";
 import Link from "next/link";
 import styles from "./tasks-list.module.css";
-import { listTasks,deleteTask } from "@/util/api-helper";
+import { listTasks, deleteTask } from "@/util/api-helper";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash,faEye,faPen} from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faEye, faPen } from "@fortawesome/free-solid-svg-icons";
 import DeleteModal from "./delete-modal";
 
 interface Props {
   tasks: Task[];
+  totalPages: number;
 }
 
 export default function TasksList(props: Props) {
-  const { tasks } = props;
+  const { tasks, totalPages } = props;
   const [searchName, setSearchName] = useState("");
   const [filterComplete, setFilterComplete] = useState("");
   const [taskList, setTaskList] = useState(tasks);
-  const [showModal,setShowModal] = useState(false);
-  const [deleteTaskId,setDeleteTaskId] = useState(0);
+  const [showModal, setShowModal] = useState(false);
+  const [deleteTaskId, setDeleteTaskId] = useState(0);
+  const [page, setPage] = useState(1);
+  const [totalPagesLocal,setTotalPagesLocal] = useState(totalPages);
 
   async function handleSearch(event: BaseSyntheticEvent) {
     setSearchName(event.target.value);
-    let tasks = await listTasks(parseInt(filterComplete), event.target.value);
-    if (tasks.success) {
-      setTaskList(tasks.data);
-    }
+    loadTasks(parseInt(filterComplete),event.target.value,page);
   }
 
   async function handleChangeComplete(event: BaseSyntheticEvent) {
     setFilterComplete(event.target.value);
-    let tasks = await listTasks(parseInt(event.target.value), searchName);
-    if (tasks.success) {
-      setTaskList(tasks.data);
+    loadTasks(parseInt(event.target.value),searchName,page);
+  }
+
+  function closeModal() {
+    setShowModal(false);
+  }
+
+  function intentDelete(id: any) {
+    setDeleteTaskId(id);
+    setShowModal(true);
+  }
+
+  async function deletedSuccessfully() {
+    loadTasks(null,null,page);
+    setShowModal(false);
+  }
+
+  async function changePage(newPage: number) {
+    setPage(newPage);
+    loadTasks(null,null,newPage);
+  }
+
+  async function prevPage() {
+    if (page > 1) {
+      setPage((prev) => prev - 1);
+      loadTasks(null, null,page-1)
     }
   }
 
-  function closeModal(){
-    setShowModal(false)
+  async function nextPage() {
+    if (page < totalPagesLocal) {
+      setPage((prev) => prev + 1);
+      loadTasks(null,null,page+1)
+    }
   }
 
-  function intentDelete(id:any){
-    setDeleteTaskId(id)
-    setShowModal(true)
+  async function loadTasks(completed : any, search:any, newPage:number){
+    let tasks = await listTasks(completed, search, newPage);
+    if (tasks.success) {
+      setTaskList(tasks.data.tasks);
+      setTotalPagesLocal(tasks.data.totalPages)
+    }else{
+      console.log("Error loading ",tasks.message)
+    }
   }
 
-  async function deletedSuccessfully(){
-    let tasks = await listTasks();
-      if (tasks.success) {
-        setTaskList(tasks.data);
-      }
-      
-    setShowModal(false)
+  const pages = [];
+  for (let i = 1; i <= totalPagesLocal; i++) {
+    pages.push(
+      <li
+        className={(page == i ? "active" : "") + " page-item"}
+        key={i}
+        onClick={() => changePage(i)}
+      >
+        <a className="page-link" >
+          {i}
+        </a>
+      </li>
+    );
   }
 
   return (
@@ -104,19 +141,22 @@ export default function TasksList(props: Props) {
                 <td>{task.completed ? "Yes" : "No"}</td>
                 <td>
                   <div className={styles.btnActions}>
-                    <Link href={"/tasks/detail/" + task.id} title='Detail'>
+                    <Link href={"/tasks/detail/" + task.id} title="Detail">
                       <button className="btn btn-outline-primary">
                         <FontAwesomeIcon icon={faEye} />
                       </button>
                     </Link>
-                    <Link href={"/tasks/update/" + task.id} title='Edit'>
+                    <Link href={"/tasks/update/" + task.id} title="Edit">
                       <button className="btn btn-outline-success">
                         <FontAwesomeIcon icon={faPen} />
                       </button>
                     </Link>
-                    <button className="btn btn-outline-danger" title='Delete'
-                    onClick={()=>intentDelete(task.id)}>
-                    <FontAwesomeIcon icon={faTrash} />
+                    <button
+                      className="btn btn-outline-danger"
+                      title="Delete"
+                      onClick={() => intentDelete(task.id)}
+                    >
+                      <FontAwesomeIcon icon={faTrash} />
                     </button>
                   </div>
                 </td>
@@ -126,9 +166,30 @@ export default function TasksList(props: Props) {
         </table>
       </div>
 
-      {deleteTaskId>0 && <DeleteModal show={showModal} 
-      idTask={deleteTaskId}
-      closeClick={closeModal} afterDelete={deletedSuccessfully}/>} 
+      <nav aria-label="Page navigation example">
+        <ul className="pagination">
+          <li className={(page==1?'disabled':'')+" page-item" } onClick={prevPage}>
+            <a className="page-link" >
+              Previous
+            </a>
+          </li>
+
+          {pages}
+          <li  className={(page==totalPages?'disabled':'')+" page-item" }  onClick={nextPage}>
+            <a className="page-link" >
+              Next
+            </a>
+          </li>
+        </ul>
+      </nav>
+      {deleteTaskId > 0 && (
+        <DeleteModal
+          show={showModal}
+          idTask={deleteTaskId}
+          closeClick={closeModal}
+          afterDelete={deletedSuccessfully}
+        />
+      )}
     </div>
   );
 }

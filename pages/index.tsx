@@ -9,13 +9,15 @@ import { listTasks } from '@/util/api-helper'
 
 const inter = Inter({ subsets: ['latin'] })
 interface Props {
-  tasks : Task[]
+  tasks : Task[],
+  totalPages : number
 }
 
 export default function Home(props:Props) {
+  
   return (
     <Fragment>
-      <TasksList tasks={props.tasks} />
+      <TasksList tasks={props.tasks} totalPages={props.totalPages} />
     </Fragment>
   )
 }
@@ -23,11 +25,12 @@ export default function Home(props:Props) {
 export async function getServerSideProps()  {
     
   const tasksResponse = await listTasks();
-  const tasks = tasksResponse.data;
-  
+  const tasks = tasksResponse.data.tasks;
+
   return {
       props : {
-          tasks : tasks
+          tasks : tasks,
+          totalPages : tasksResponse.data?.totalPages
       }
   }
 }

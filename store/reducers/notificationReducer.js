@@ -11,11 +11,11 @@ import {
   };
   
   const notificationReducer = (state = initialState, action) => {
-    console.log("action type ",action.type)
+    
     switch (action.type) {
         
       case SET_NOTIFICATION:
-        console.log("siii ",action.payload)
+        
         return {
           ...state,
           notification: {...action.payload},

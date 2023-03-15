@@ -111,6 +111,13 @@ a {
   align-items: center;
 }
 
+.page-item{
+  cursor: pointer;
+}
+
+.page-item.disabled{
+  cursor: auto;
+}
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;

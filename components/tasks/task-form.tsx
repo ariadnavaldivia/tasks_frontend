@@ -53,12 +53,10 @@ export default function TaskForm(props:Props) {
         })
     }
 
-    console.log(errors)
     async function handleSave(event:any){
 
         event.preventDefault();
         setIsLoading(true)
-        console.log(taskData)
 
         let errorsTemp : any= {};
         let error = false;
@@ -96,10 +94,8 @@ export default function TaskForm(props:Props) {
         let response ;
         if(mode=='create'){
             response = await createTask(taskData);
-            console.log("response ",response)
         }else{
             response = await updateTask(taskData);
-            console.log("response ",response)
         }
 
         
