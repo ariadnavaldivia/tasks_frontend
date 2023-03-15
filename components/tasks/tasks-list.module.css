@@ -2,15 +2,18 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
 }
 .topTable select{
     margin-left: 1rem;
+    width: auto;
 }
 
 .rightControl{
     display: flex;
     align-items: center;
     justify-content: center;
+    
 }
 
 .btnNew{
@@ -22,9 +25,54 @@
     margin-right: 2rem;
 }
 .btnActions {
-
     text-align: center;
 }
 .btnActions button{
-    margin-right: 1rem;
+    margin-left: 1rem;
+    margin-bottom: 5px;
+}
+.filter{
+    display: flex;
+}
+
+
+
+@media (max-width:600px) {
+
+    .topTable select{
+        margin-left: 0px;
+    }
+    .searchInput{
+        margin-right: 0px;
+    }
+    .rightControl{
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+    }
+    .filter{
+        width: 100%;
+        margin-top: 1rem;
+    }
+    .filter select{
+        margin-left: 1rem;
+        width: 100%;
+    }
+
+    .btnNew{
+        
+        margin-left: 0;
+    }
+    .btnNewContainer{
+        width: 100%;
+        text-align: center;
+    }
+
+    .btnNew{
+        width: 100%;
+    }
+    .btnActions {
+        display: flex;
+        justify-content: flex-end;
+    }
+    
 }

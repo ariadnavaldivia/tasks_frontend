@@ -101,6 +101,7 @@ export default function TasksList(props: Props) {
             placeholder="Search name..."
             onChange={handleSearch}
           />
+          <div className={styles.filter}>
           <label htmlFor="selectCompleted">Filter:</label>
           <select
             name=""
@@ -112,9 +113,11 @@ export default function TasksList(props: Props) {
             <option value={1}>Completed</option>
             <option value={0}>Not completed</option>
           </select>
+          </div>
+          
         </div>
-        <div>
-          <Link href="/tasks/new" className="pull-right">
+        <div className={styles.btnNewContainer}>
+          <Link href="/tasks/new" >
             <button className={styles.btnNew + " btn btn-primary"}>
               New Task
             </button>
@@ -135,10 +138,10 @@ export default function TasksList(props: Props) {
           <tbody>
             {taskList.map((task) => (
               <tr key={task.id}>
-                <td>{task.id}</td>
-                <td>{task.name}</td>
-                <td>{task.limit_date}</td>
-                <td>{task.completed ? "Yes" : "No"}</td>
+                <td data-label="ID">{task.id}</td>
+                <td data-label="Name">{task.name}</td>
+                <td data-label="Limit Date">  {task.limit_date}</td>
+                <td data-label="Completed">{task.completed ? "Yes" : "No"}</td>
                 <td>
                   <div className={styles.btnActions}>
                     <Link href={"/tasks/detail/" + task.id} title="Detail">
@@ -147,7 +150,7 @@ export default function TasksList(props: Props) {
                       </button>
                     </Link>
                     <Link href={"/tasks/update/" + task.id} title="Edit">
-                      <button className="btn btn-outline-success">
+                      <button className="btn btn-outline-primary">
                         <FontAwesomeIcon icon={faPen} />
                       </button>
                     </Link>

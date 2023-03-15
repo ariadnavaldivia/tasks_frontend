@@ -1,6 +1,6 @@
 import { listTasks ,getTask} from "@/util/api-helper"
 import { Task } from "@/util/Task"
-
+import { useRouter } from "next/router"
 interface Props {
     task : Task 
 }
@@ -8,9 +8,15 @@ interface Props {
 export default function DetailTask(props :Props){
 
     const {task} = props
+    const router = useRouter();
+
+    function goBack(){
+        router.push('/')
+    }
+
     return (
         <div>
-            <h2>Detail</h2>
+            <h2>Task Detail</h2>
             {!task && 
                 <p>No task found</p>
             }
@@ -18,10 +24,12 @@ export default function DetailTask(props :Props){
             {
                 task &&
                 <div>
-                    <p>Name : {task.name}</p>
-                    <p>Description : {task.description}</p>
-                    <p>Limit Date : {task.limit_date}</p>
-                    <p>Completed : {task.completed?'Yes':'No'}</p>
+                    <p><strong>Name :</strong>  {task.name}</p>
+                    <p><strong>Description :</strong> {task.description}</p>
+                    <p><strong>Limit Date :</strong> {task.limit_date}</p>
+                    <p><strong>Completed : </strong>{task.completed?'Yes':'No'}</p>
+                    <button className="btn btn-outline-primary btn-grow-mobile" 
+                    onClick={goBack}>Go back</button>
                 </div>
             }
         </div>
@@ -58,6 +66,6 @@ export async function getStaticPaths () {
     
     return {
         paths :paths,
-        fallback : true
+        fallback : 'blocking'
     }
 }

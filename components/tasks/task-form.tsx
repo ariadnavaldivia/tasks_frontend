@@ -158,7 +158,7 @@ export default function TaskForm(props:Props) {
         </div>
       </div>
 
-      <button type="submit" className="btn btn-primary mb-2 my-3"
+      <button type="submit" className={styles.btnSave +" btn btn-primary mb-2 my-3" } 
       disabled={loading}>
         <span>Save</span>
         {loading &&  <Loader /> }

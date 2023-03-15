@@ -4,3 +4,9 @@
 .errorAlert{
     color : red;
 }
+
+@media(max-width:600px){
+    .btnSave{
+        width: 100%;
+    }
+}
